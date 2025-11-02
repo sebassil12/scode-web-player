@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { formatTime } from "@/lib/utils";
 import { clear } from "console";
+import { PlayPauseIcon, ArrowPathIcon } from "@heroicons/react/20/solid";
 
 export function Timer() {
   const [seconds, setSeconds] = useState<number>(0);
@@ -48,10 +49,14 @@ export function Timer() {
         {formatTime(seconds)}
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button onClick={togglePlayPause}>
+        <Button onClick={togglePlayPause} variant="outline">
           {isActive ? "Pause" : "Start"}
+          <PlayPauseIcon />
         </Button>
-        <Button onClick={resetTimer}>Restart</Button>
+        <Button onClick={resetTimer}>
+          Restart
+          <ArrowPathIcon />
+        </Button>
       </CardFooter>
     </Card>
   );
