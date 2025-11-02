@@ -8,7 +8,7 @@ export default function Home() {
       <header>
         <SettingsModal />
       </header>
-      <main className="flex items-start min-h-screen min-w-screen justify-center">
+      <main className="flex items-start min-w-screen justify-center">
         <Timer />
       </main>
     </>
