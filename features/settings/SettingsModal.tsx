@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,11 +10,34 @@ import {
   DialogTrigger,
   DialogFooter,
   DialogDescription,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Settings } from "lucide-react";
 export function SettingsModal() {
+  const [mode, setMode] = useState<string>(() => {
+    if (typeof window === "undefined") return "countup";
+    return (
+      (localStorage.getItem("timer.mode") as "countup" | "countdown") ||
+      "countup"
+    );
+  });
+
+  const [duration, setDuration] = useState<string>(() => {
+    if (typeof window === "undefined") return "00:00:00";
+    return localStorage.getItem("timer.initial") || "00:00:00";
+  });
+
+  const handleSave = () => {
+    try {
+      localStorage.setItem("timer.mode", mode);
+      localStorage.setItem("timer.initial", duration);
+    } catch (e) {
+      console.error("Failed to save timer settings", e);
+    }
+  };
+
   return (
     <Dialog>
       {/*Trigger Button*/}
@@ -27,34 +51,43 @@ export function SettingsModal() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
-          <DialogDescription>Cierra al terminar</DialogDescription>
+          <DialogDescription>
+            Adjust according to your preferences
+          </DialogDescription>
         </DialogHeader>
-        {/* 3. Contenido de ejemplo (un formulario) */}
+
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Nombre
+            <Label htmlFor="username" className="text-right">
+              Counter
             </Label>
             <Input
-              id="name"
-              defaultValue="Mi Cronómetro"
+              id="timer"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
               className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Usuario
+            <Label htmlFor="mode" className="text-right">
+              Mode
             </Label>
-            <Input
-              id="username"
-              defaultValue="@usuario"
-              className="col-span-3"
-            />
+            <select
+              id="mode"
+              value={mode}
+              onChange={(e) => setMode(e.target.value)}
+              className="col-span-3 rounded-md border px-2 py-1"
+            >
+              <option value="countup">Count Up</option>
+              <option value="countdown">Count Down</option>
+            </select>
           </div>
         </div>
 
         <DialogFooter>
-          <Button type="submit">Guardar cambios</Button>
+          <DialogClose asChild>
+            <Button onClick={handleSave}>Save Changes</Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -12,10 +12,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-const routes = [
-  { href: "/", label: "Cronómetro" },
-  { href: "/dashboard", label: "Dashboard" },
-];
+const routes = [{ href: "/", label: "Cronómetro" }];
 
 export function MainNavbar() {
   const pathname = usePathname();
